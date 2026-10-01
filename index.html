@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Наша історія ❤️</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: #3d3034;
+      font-family: 'Montserrat', sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.85), transparent 30%),
+        radial-gradient(circle at 80% 90%, rgba(255,210,220,.5), transparent 35%),
+        linear-gradient(135deg, #fff8f8 0%, #f9e9ed 50%, #fff5f6 100%);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "♡";
+      position: fixed;
+      color: rgba(180, 90, 110, .10);
+      font-size: 180px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      top: -50px;
+      left: -40px;
+      transform: rotate(-20deg);
+    }
+
+    body::after {
+      bottom: -70px;
+      right: -30px;
+      transform: rotate(20deg);
+    }
+
+    .floating-hearts {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -30px;
+      color: rgba(190, 91, 113, .18);
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 1;
+      }
+      85% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      width: min(760px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 70px;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn .65s ease;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: rgba(255, 255, 255, .78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 28px;
+      padding: 42px 42px 38px;
+      box-shadow:
+        0 20px 60px rgba(120, 65, 80, .12),
+        0 4px 15px rgba(120, 65, 80, .06);
+    }
+
+    .start-card,
+    .final-card {
+      text-align: center;
+      padding-top: 65px;
+      padding-bottom: 65px;
+    }
+
+    .eyebrow {
+      color: #b35e72;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      color: #4b3038;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: clamp(48px, 10vw, 78px);
+      line-height: .95;
+      margin: 0 0 22px;
+    }
+
+    h2 {
+      font-size: clamp(38px, 8vw, 58px);
+      line-height: 1;
+      margin: 5px 0 28px;
+    }
+
+    .start-heart {
+      font-size: 56px;
+      margin-bottom: 12px;
+      animation: heartbeat 1.8s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.12); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.08); }
+    }
+
+    .intro {
+      max-width: 500px;
+      margin: 0 auto 34px;
+      color: #6c555b;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .level-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .level-number {
+      color: #b35e72;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    .progress {
+      height: 5px;
+      flex: 1;
+      max-width: 280px;
+      background: #f0dce1;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #b35e72, #df91a4);
+      border-radius: inherit;
+      transition: width .5s ease;
+    }
+
+    .quest-text {
+      white-space: pre-line;
+      font-size: 16px;
+      line-height: 1.85;
+      color: #4c3d42;
+    }
+
+    .quest-text p {
+      margin: 0 0 20px;
+    }
+
+    .quest-text .emoji-line {
+      text-align: left;
+    }
+
+    .answer-area {
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid #efdde1;
+    }
+
+    .answer-label {
+      display: block;
+      font-size: 13px;
+      color: #8b6c74;
+      margin-bottom: 10px;
+      letter-spacing: .5px;
+    }
+
+    .answer-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid #e3cbd1;
+      background: rgba(255,255,255,.9);
+      border-radius: 14px;
+      padding: 15px 17px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      color: #3d3034;
+      outline: none;
+      transition: .2s;
+    }
+
+    input:focus {
+      border-color: #c7788c;
+      box-shadow: 0 0 0 4px rgba(199,120,140,.10);
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 24px;
+      background: linear-gradient(135deg, #b45f73, #c87589);
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(180,95,115,.22);
+      transition: transform .2s, box-shadow .2s, opacity .2s;
+      white-space: nowrap;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 11px 24px rgba(180,95,115,.28);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .start-button {
+      padding: 16px 34px;
+      font-size: 15px;
+    }
+
+    .error {
+      min-height: 22px;
+      margin-top: 12px;
+      color: #b14e64;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .error.show {
+      opacity: 1;
+    }
+
+    .success-icon {
+      font-size: 65px;
+      margin-bottom: 12px;
+    }
+
+    .final-text {
+      color: #6c555b;
+      line-height: 1.8;
+      max-width: 540px;
+      margin: 0 auto 32px;
+    }
+
+    .gift-button {
+      display: inline-block;
+      text-decoration: none;
+      padding: 16px 30px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #b45f73, #c87589);
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(180,95,115,.22);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .gift-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 11px 24px rgba(180,95,115,.28);
+    }
+
+    .gift-placeholder {
+      display: inline-block;
+      padding: 15px 22px;
+      border-radius: 14px;
+      background: #f6e7eb;
+      color: #9b6b77;
+      font-size: 13px;
+    }
+
+    .password-hint {
+      color: #92727b;
+      font-size: 13px;
+      margin-top: 13px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 22px;
+      color: rgba(100,70,78,.5);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+    }
+
+    .shake {
+      animation: shake .4s ease;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        width: min(100% - 20px, 760px);
+        padding: 15px 0 40px;
+      }
+
+      .card {
+        border-radius: 22px;
+        padding: 28px 22px 25px;
+      }
+
+      .start-card,
+      .final-card {
+        padding-top: 48px;
+        padding-bottom: 48px;
+      }
+
+      .quest-text {
+        font-size: 15px;
+        line-height: 1.75;
+      }
+
+      .level-header {
+        margin-bottom: 24px;
+      }
+
+      .answer-row {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .progress {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="floating-hearts">
+    <span class="heart" style="left:8%; animation-duration:13s; animation-delay:1s; font-size:20px;">♡</span>
+    <span class="heart" style="left:20%; animation-duration:17s; animation-delay:4s; font-size:15px;">♥</span>
+    <span class="heart" style="left:35%; animation-duration:14s; animation-delay:7s; font-size:24px;">♡</span>
+    <span class="heart" style="left:52%; animation-duration:18s; animation-delay:2s; font-size:17px;">♥</span>
+    <span class="heart" style="left:68%; animation-duration:15s; animation-delay:6s; font-size:21px;">♡</span>
+    <span class="heart" style="left:84%; animation-duration:19s; animation-delay:3s; font-size:16px;">♥</span>
+    <span class="heart" style="left:93%; animation-duration:12s; animation-delay:9s; font-size:23px;">♡</span>
+  </div>
+
+  <main class="app">
+
+    <!-- START -->
+    <section id="start-screen" class="screen active">
+      <div class="card start-card">
+        <div class="start-heart">❤️</div>
+
+        <div class="eyebrow">маленька гра для нас</div>
+
+        <h1>Наша історія</h1>
+
+        <div class="intro">
+          Деякі речі не хочеться просто згадувати.<br>
+          Їх хочеться прожити ще раз.
+          <br><br>
+          Готовий?
+        </div>
+
+        <button class="start-button" onclick="startGame()">
+          Почати
+        </button>
+      </div>
+
+      <div class="footer">❤️</div>
+    </section>
+
+
+    <!-- LEVEL 01 -->
+    <section id="level-1" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">01 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:12.5%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>«Деякі речі не хочеться просто згадувати. Їх хочеться прожити ще раз.</p>
+
+          <p>Готовий?</p>
+
+          <p>🗓️ 01</p>
+
+          <p>Почнемо з самого початку.</p>
+
+          <p>У кожної хорошої історії є своя дата.</p>
+
+          <p>Згадай день, коли почалася наша.</p>
+
+          <p>Не рік.<br>
+          Не місяць.<br>
+          Тільки число.</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-1" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(1)">Далі ❤️</button>
+          </div>
+          <div id="error-1" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEVEL 02 -->
+    <section id="level-2" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">02 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:25%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>🌃 02</p>
+
+          <p>У кожної історії є також своє місце початку.</p>
+
+          <p>Шукай його на карті.</p>
+
+          <p>Це місто, яке стало початком цієї дуже цікавої пригоди ❤️</p>
+
+          <p>Що це за місто? Порахуй кількість літер у відповіді.</p>
+
+          <p>Це друга цифра пароля.</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-2" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(2)">Далі ❤️</button>
+          </div>
+          <div id="error-2" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEVEL 03 -->
+    <section id="level-3" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">03 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:37.5%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>🕵️ 03</p>
+
+          <p>Маленький тест на знання нас.</p>
+
+          <p>Перед тобою чотири твердження.</p>
+
+          <p>Тільки одне з них - неправда.</p>
+
+          <p>1. На першому побаченні на тобі була сіра кофта, а на мені «не шкіряна» куртка і фіолетовий шарф<br>
+          2. В першу зустріч ти пригостив мене кавою та печивком<br>
+          3. Наше перше побачення було в п’ятницю<br>
+          4. Наш перший поцілунок був через декілька годин після першої зустрічі</p>
+
+          <p>Знайди брехуна! Його номер - наступна цифра твого пароля.</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-3" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(3)">Далі ❤️</button>
+          </div>
+          <div id="error-3" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEVEL 04 -->
+    <section id="level-4" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">04 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:50%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>🌼 04</p>
+
+          <p>Є одна квітка, яка для більшості людей - просто квітка.</p>
+
+          <p>А для нас вона асоціюється з «нашою датою» - її аромат і кількість, подарована мені тобою ☺️</p>
+
+          <p>Згадай, яка це квітка і, придивись уважно, яка цифра ховається за першою буквою її назви.</p>
+
+          <p>Це наступна цифра твого пароля.</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-4" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(4)">Далі ❤️</button>
+          </div>
+          <div id="error-4" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEVEL 05 -->
+    <section id="level-5" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">05 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:62.5%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>🧳 05</p>
+
+          <p>Наша історія почалася з однієї зустрічі.<br>
+          А потім у ній ставало все більше моментів, які ми проживали вже разом.</p>
+
+          <p>Одним із таких моментів була наша перша спільна подорож в інше місто.</p>
+
+          <p>З тобою не було страшно чи тривожно. Мені дуже тепло згадувати, як тоді ми створювали спогади разом 🫧🐡🗽</p>
+
+          <p>Який це був місяць?<br>
+          Його номер і стане наступною цифрою твого пароля.</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-5" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(5)">Далі ❤️</button>
+          </div>
+          <div id="error-5" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEVEL 06 -->
+    <section id="level-6" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">06 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:75%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>🌍 06</p>
+
+          <p>Після цього у нашої історії з’явилося чимало нових місць 🤗</p>
+
+          <p>Ми разом перетинали кордони, відкривали незнайомі міста, гуляли новими вулицями, пробували щось уперше і привозили додому не лише фотографії, а й свої маленькі спогади ❤️</p>
+
+          <p>Згадай усі країни, в яких ми побували разом.</p>
+
+          <p>Не рахуй ті, де ми були окремо.<br>
+          Тільки наші спільні.</p>
+
+          <p>Скільки їх назбиралося?</p>
+
+          <p>Це число стане наступною цифрою твого пароля.</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-6" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(6)">Далі ❤️</button>
+          </div>
+          <div id="error-6" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEVEL 07 -->
+    <section id="level-7" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">07 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:87.5%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>💍 07</p>
+
+          <p>У нашої історії є не одна важлива дата.</p>
+
+          <p>Є та, з якої все почалося.<br>
+          А є та, коли ми сказали одне одному «так» і почали вже зовсім іншу частину нашої історії ❤️</p>
+
+          <p>Згадай той день.<br>
+          Якого числа і місяця ми стали сімʼєю?</p>
+
+          <p>Це число підкаже тобі наступну цифру твого пароля. Подарунок вже близько 🤗</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-7" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(7)">Далі ❤️</button>
+          </div>
+          <div id="error-7" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- LEVEL 08 -->
+    <section id="level-8" class="screen">
+      <div class="card">
+        <div class="level-header">
+          <div class="level-number">08 / 08</div>
+          <div class="progress">
+            <div class="progress-bar" style="width:100%"></div>
+          </div>
+        </div>
+
+        <div class="quest-text">
+          <p>🧩 08</p>
+
+          <p>Останній шматочок 🥳</p>
+
+          <p>Ми вже згадали чимало.</p>
+
+          <p>У кожного з цих моментів є своя дата, своє місце і свій спогад.<br>
+          Але найцінніше для мене - те, що всі вони стали нашими ❤️</p>
+
+          <p>Тепер залишилося зовсім трішки.</p>
+
+          <p>Згадай, скільки років ми вже пишемо цю історію разом?</p>
+
+          <p>Це остання цифра твого паролю 🙌</p>
+
+          <p>Тепер у тебе є всі цифри.</p>
+
+          <p>Якщо ти все згадав правильно - відкриється дещо, що я приготувала для нас.</p>
+
+          <p>І, здається, це буде цікавий фінал цієї маленької гри.<br>
+          Або, можливо, тільки початок наступної пригоди 😉😘</p>
+
+          <p>З нашою річницею ❤️»</p>
+        </div>
+
+        <div class="answer-area">
+          <label class="answer-label">Твоя відповідь</label>
+          <div class="answer-row">
+            <input id="answer-8" type="text" inputmode="numeric" autocomplete="off">
+            <button onclick="checkAnswer(8)">Завершити ❤️</button>
+          </div>
+          <div id="error-8" class="error">Спробуй ще раз ❤️</div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- PASSWORD -->
+    <section id="password-screen" class="screen">
+      <div class="card final-card">
+        <div class="success-icon">🥳</div>
+
+        <div class="eyebrow">останній крок</div>
+
+        <h2>Ти зібрав усі цифри ❤️</h2>
+
+        <div class="final-text">
+          Залишилося перевірити, чи правильно ти склав наш маленький пазл.
+          <br><br>
+          Введи пароль, який у тебе вийшов.
+        </div>
+
+        <div class="answer-area" style="border-top:none; padding-top:0;">
+          <div class="answer-row">
+            <input
+              id="final-password"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              maxlength="13"
+              placeholder="Введи пароль"
+            >
+            <button onclick="checkPassword()">Відкрити ❤️</button>
+          </div>
+
+          <div id="password-error" class="error">
+            Майже! Перевір цифри ще раз ❤️
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- FINAL -->
+    <section id="final-screen" class="screen">
+      <div class="card final-card">
+        <div class="success-icon">💖</div>
+
+        <div class="eyebrow">ти впорався</div>
+
+        <h2>З нашою річницею ❤️</h2>
+
+        <div class="final-text">
+          Деякі історії хочеться не просто пам'ятати.<br>
+          Їх хочеться проживати знову і знову.
+          <br><br>
+          Дякую тобі за нашу історію.<br>
+          За всі наші дати, міста, подорожі, зустрічі<br>
+          і маленькі моменти, які стали нашими.
+          <br><br>
+          А тепер — час відкривати подарунок 😉😘
+        </div>
+
+        <!--
+          КОЛИ БУДЕ ПОСИЛАННЯ НА ПОДАРУНОК:
+          заміни весь блок gift-placeholder нижче на:
+
+          <a href="ТУТ_ПОСИЛАННЯ"
+             target="_blank"
+             class="gift-button">
+             Відкрити подарунок 🎁
+          </a>
+        -->
+
+        <div class="gift-placeholder">
+          🎁 Подарунок з'явиться тут ❤️
+        </div>
+      </div>
+
+      <div class="footer">
+        наша історія триває... ❤️
+      </div>
+    </section>
+
+  </main>
+
+
+  <script>
+    /*
+      ПРАВИЛЬНІ ВІДПОВІДІ.
+      Вони не відображаються користувачу.
+    */
+    const answers = {
+      1: "2",
+      2: "6",
+      3: "3",
+      4: "10",
+      5: "1",
+      6: "6",
+      7: "2110",
+      8: "12"
+    };
+
+    const finalPassword = "2631016211012";
+
+    let currentLevel = 1;
+
+
+    function startGame() {
+      showScreen("level-1");
+
+      setTimeout(() => {
+        document.getElementById("answer-1").focus();
+      }, 500);
+    }
+
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+
+      const screen = document.getElementById(id);
+
+      if (screen) {
+        screen.classList.add("active");
+      }
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+
+    function normalizeAnswer(value) {
+      return value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "");
+    }
+
+
+    function checkAnswer(level) {
+      const input = document.getElementById(`answer-${level}`);
+      const error = document.getElementById(`error-${level}`);
+
+      const userAnswer = normalizeAnswer(input.value);
+      const correctAnswer = normalizeAnswer(answers[level]);
+
+      if (userAnswer === correctAnswer) {
+        error.classList.remove("show");
+
+        input.disabled = true;
+
+        setTimeout(() => {
+          if (level < 8) {
+            currentLevel = level + 1;
+            showScreen(`level-${currentLevel}`);
+
+            setTimeout(() => {
+              const nextInput =
+                document.getElementById(`answer-${currentLevel}`);
+
+              if (nextInput) {
+                nextInput.focus();
+              }
+            }, 500);
+          } else {
+            showScreen("password-screen");
+
+            setTimeout(() => {
+              document.getElementById("final-password").focus();
+            }, 500);
+          }
+        }, 350);
+
+      } else {
+        error.classList.add("show");
+
+        input.classList.remove("shake");
+
+        void input.offsetWidth;
+
+        input.classList.add("shake");
+
+        input.select();
+      }
+    }
+
+
+    function checkPassword() {
+      const input = document.getElementById("final-password");
+      const error = document.getElementById("password-error");
+
+      const userPassword = normalizeAnswer(input.value);
+
+      if (userPassword === finalPassword) {
+        error.classList.remove("show");
+
+        input.disabled = true;
+
+        setTimeout(() => {
+          showScreen("final-screen");
+
+          createCelebration();
+        }, 400);
+
+      } else {
+        error.classList.add("show");
+
+        input.classList.remove("shake");
+
+        void input.offsetWidth;
+
+        input.classList.add("shake");
+
+        input.select();
+      }
+    }
+
+
+    function createCelebration() {
+      const symbols = ["❤️", "💕", "✨", "🌸", "💖", "🥰"];
+
+      for (let i = 0; i < 35; i++) {
+        const item = document.createElement("div");
+
+        item.textContent =
+          symbols[Math.floor(Math.random() * symbols.length)];
+
+        item.style.position = "fixed";
+        item.style.left = Math.random() * 100 + "vw";
+        item.style.top = "-30px";
+        item.style.fontSize = (14 + Math.random() * 18) + "px";
+        item.style.zIndex = "9999";
+        item.style.pointerEvents = "none";
+        item.style.transition =
+          "transform " + (2 + Math.random() * 2) + "s ease-out, opacity 3s ease";
+
+        document.body.appendChild(item);
+
+        requestAnimationFrame(() => {
+          item.style.transform =
+            `translateY(${window.innerHeight + 100}px) rotate(${Math.random() * 720 - 360}deg)`;
+          item.style.opacity = "0";
+        });
+
+        setTimeout(() => {
+          item.remove();
+        }, 4500);
+      }
+    }
+
+
+    // Enter = перевірити відповідь
+    document.addEventListener("keydown", function(event) {
+      if (event.key !== "Enter") return;
+
+      const activeScreen =
+        document.querySelector(".screen.active");
+
+      if (!activeScreen) return;
+
+      if (activeScreen.id.startsWith("level-")) {
+        const level =
+          Number(activeScreen.id.replace("level-", ""));
+
+        checkAnswer(level);
+      }
+
+      if (activeScreen.id === "password-screen") {
+        checkPassword();
+      }
+    });
+  </script>
+
+</body>
+</html>
